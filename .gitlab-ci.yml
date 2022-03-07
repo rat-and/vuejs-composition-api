@@ -1,0 +1,42 @@
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job:
+  image: node:14-alpine
+  stage: build
+  script:
+    - echo "Checking project's build-up...."
+    - cd composition-api
+    - yarn install --silent
+    - yarn build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
+
+unit-test-job:
+  image: node:14-alpine
+  stage: test
+  script:
+    - echo "Running project's unit tests..."
+    - cd composition-api
+    - yarn install --silent
+    - yarn test:unit
+
+lint-test-job:
+  image: node:14-alpine
+  stage: test
+  script:
+    - echo "Running project's lint tests..."
+    - cd composition-api
+    - yarn install --silent
+    - yarn lint
+
+deploy-mock-job:
+  image: node:14-alpine
+  stage: deploy
+  script:
+    - echo "Running mocked project deploy..."
+    - sleep 30
