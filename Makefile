@@ -27,6 +27,7 @@ run-unit-tests:  ## Run unit tests on DEV instance
 	@docker-compose \
 		--file docker-compose.yml run \
 		--rm \
+		--user root \
 		app \
 		sh -c "yarn test:unit"
 	@echo "[DEV-INFO] Unit Tests on DEV instance(s) were successfully run!"
