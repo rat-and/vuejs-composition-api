@@ -1,10 +1,11 @@
-FROM node:14-alpine
-
-RUN mkdir /composition-api
-WORKDIR /composition-api
-COPY ./composition-api /composition-api
-
+FROM node:14-alpine AS base
+WORKDIR /app
+COPY ./composition-api .
 RUN yarn install
 
-RUN adduser -D user
-USER user
+FROM base AS image-version-dev
+RUN echo "Configuring image for development..."
+ENV NODE_ENV=develop
+
+# RUN adduser -D user
+# USER user
