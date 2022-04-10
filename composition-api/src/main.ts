@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import axios from "axios";
+import { router } from "./router";
 
 import { today, thisWeek, thisMonth } from "./mocks";
 
@@ -21,4 +22,7 @@ axios.get = async (url: string) => {
   }
 };
 
-createApp(App).mount("#app");
+const app = createApp(App);
+
+app.use(router);
+app.mount("#app");
