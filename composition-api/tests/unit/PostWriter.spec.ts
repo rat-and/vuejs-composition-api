@@ -1,4 +1,4 @@
-import { flushPromises, mount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import PostWriter from "../../src/components/PostWriter.vue";
 
 describe("PostWriter", () => {

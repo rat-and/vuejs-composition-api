@@ -23,9 +23,9 @@ jobs:
       - name: Run unit tests
         run: make run-ci-unit-tests
 
-  lint-tests:
+  lint-check:
     runs-on: ubuntu-latest
-    name: Run lint tests
+    name: Run lint check
     steps:
       - name: Check-out last commit
         uses: actions/checkout@v2

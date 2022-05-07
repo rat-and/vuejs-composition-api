@@ -1,7 +1,3 @@
-#local
-.git
-.cache
-
 # MacOS files
 .DS_Store
 
