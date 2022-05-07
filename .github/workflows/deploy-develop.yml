@@ -1,0 +1,35 @@
+# This CI runs at least regression tests (unit tests without coverage report)
+# whenever new code lands on 'develop' branch. It is to ensure that during
+# development no harm to the existing funtionality was made (regression).
+# New funtionality doesn't have to be fully tested on this stage.
+
+name: Quality Gate -> Regression tests on Development Environment
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Run unit tests
+    steps:
+      - name: Check-out last commit
+        uses: actions/checkout@v2
+      - name: Build docker CI image
+        run: make build-ci-env
+      - name: Run unit tests
+        run: make run-ci-unit-tests
+
+  lint-tests:
+    runs-on: ubuntu-latest
+    name: Run lint tests
+    steps:
+      - name: Check-out last commit
+        uses: actions/checkout@v2
+      - name: Build docker CI image
+        run: make build-ci-env
+      - name: Run lint check
+        run: make run-ci-lint-check

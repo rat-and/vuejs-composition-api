@@ -1,0 +1,12 @@
+version: "3.3"
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    command: >
+      sh -c "yarn serve"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
