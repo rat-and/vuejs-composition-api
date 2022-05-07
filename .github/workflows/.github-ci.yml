@@ -10,19 +10,13 @@ on:
     branches: [ develop ]
 
 jobs:
-  build:
-    name: Build & Test
+  unit-tests:
+    name: Run Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Go to the wrokdir
-        run: cd ../..
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build # will run `yarn build` command
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: test # will run `yarn test` command
+      - name: Checkout last commit
+        uses: actions/checkout@v2
+      - name: Buld CI env
+        run: make build-dev-env
+      - name: Run Unit Tests
+        run: make run-unit-tests
