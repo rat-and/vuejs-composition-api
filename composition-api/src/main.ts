@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import axios from "axios";
 import { router } from "./router";
+import "highlight.js/styles/atom-one-dark.css";
 
 import { today, thisWeek, thisMonth } from "./mocks";
 

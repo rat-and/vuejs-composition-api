@@ -1,4 +1,4 @@
-FROM node:14-alpine AS base
+FROM node:14 AS base
 WORKDIR /app
 COPY ./composition-api .
 RUN yarn install

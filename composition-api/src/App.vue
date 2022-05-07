@@ -15,10 +15,8 @@ export default defineComponent({
   name: "App",
   components: {
     Navbar,
-  }
+  },
 });
 </script>
 
-<style>
-
-</style>
+<style></style>

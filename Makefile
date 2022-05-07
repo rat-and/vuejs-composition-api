@@ -1,6 +1,6 @@
 CURR_PATH = $(shell pwd)
 APP_DIR = $(shell echo "app")
-APP_NAME = $(shell echo "composition-api")
+APP_NAME = $(shell echo "vuejs-composition-api")
 
 .PHONY: build-dev-env run-dev-env run-unit-tests down-dev-env
 

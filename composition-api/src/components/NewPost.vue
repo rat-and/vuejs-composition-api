@@ -1,5 +1,5 @@
 <template>
-  <post-writer :post="newPost" />
+  <post-writer :post="newPost" @save="save" />
 </template>
 
 <script lang="ts">
@@ -18,9 +18,15 @@ export default defineComponent({
       title: "Enter your title...",
       created: moment(),
     };
-  
+
+    const save = (post: Post) => {
+      console.log("post", post);
+    };
+
     return {
       newPost,
+
+      save,
     };
   },
 });
