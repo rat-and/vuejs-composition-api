@@ -1,3 +1,4 @@
+import { store } from "./../../src/store";
 import { nextTick } from "vue";
 import { flushPromises, mount } from "@vue/test-utils";
 import Timeline from "../../src/components/Timeline.vue";
@@ -12,7 +13,7 @@ jest.mock("axios", () => ({
 }));
 
 function mountTimeline() {
-  return mount({
+  const testComponent = {
     components: { Timeline },
     template: `
       <suspense>
@@ -24,36 +25,41 @@ function mountTimeline() {
         </template>
       </suspense>
     `,
+  };
+  return mount(testComponent, {
+    global: {
+      plugins: [store]
+    },
   });
 }
 
 describe("Timeline", () => {
   it("renders today post default", async () => {
-    const wraper = mountTimeline();
+    const wrapper = mountTimeline();
 
     await flushPromises(); // Immediately resolves all promises
-    expect(wraper.html()).toContain(today.created.format("Do MMM"));
+    expect(wrapper.html()).toContain(today.created.format("Do MMM"));
   });
 
   it("updates when the period is clicked | week", async () => {
-    const wraper = mountTimeline();
+    const wrapper = mountTimeline();
     await flushPromises();
 
-    wraper.get("[data-test='This Week']").trigger("click");
+    wrapper.get("[data-test='This Week']").trigger("click");
     // have to wait for requestAnimationFrame( () => ...) to exec
     await nextTick(); //Resolves Vue-internal promises
 
-    expect(wraper.html()).toContain(today.created.format("Do MMM"));
-    expect(wraper.html()).toContain(thisWeek.created.format("Do MMM"));
+    expect(wrapper.html()).toContain(today.created.format("Do MMM"));
+    expect(wrapper.html()).toContain(thisWeek.created.format("Do MMM"));
   });
 
   it("updates when the period is clicked | month", async () => {
-    const wraper = mountTimeline();
+    const wrapper = mountTimeline();
     await flushPromises();
-    await wraper.get("[data-test='This Month']").trigger("click"); // same as nextTick()
+    await wrapper.get("[data-test='This Month']").trigger("click"); // same as nextTick()
 
-    expect(wraper.html()).toContain(today.created.format("Do MMM"));
-    expect(wraper.html()).toContain(thisWeek.created.format("Do MMM"));
-    expect(wraper.html()).toContain(thisMonth.created.format("Do MMM"));
+    expect(wrapper.html()).toContain(today.created.format("Do MMM"));
+    expect(wrapper.html()).toContain(thisWeek.created.format("Do MMM"));
+    expect(wrapper.html()).toContain(thisMonth.created.format("Do MMM"));
   });
 });

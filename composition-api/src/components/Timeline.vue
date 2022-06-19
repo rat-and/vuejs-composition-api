@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import moment from "moment";
-import { today, thisWeek, thisMonth, Post } from "../mocks";
+import { Post } from "../mocks";
 import { useStore } from '../store';
 import TimelinePost from "./TimelinePost.vue";
 

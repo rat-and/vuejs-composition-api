@@ -3,10 +3,12 @@
 </template>
 
 <script lang="ts">
+import { useStore } from "../store";
 import moment from "moment";
 import { defineComponent } from "vue";
 import { Post } from "../mocks";
 import PostWriter from "./PostWriter.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -16,11 +18,15 @@ export default defineComponent({
     const newPost: Post = {
       id: "-1",
       title: "Enter your title...",
-      created: moment(),
+      created: moment().subtract(1, "second"),
     };
 
-    const save = (post: Post) => {
-      console.log("post", post);
+    const store = useStore();
+    const router = useRouter();
+
+    const save = async (post: Post) => {
+      await store.createPost(post);
+      router.push("/");
     };
 
     return {
