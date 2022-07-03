@@ -1,4 +1,4 @@
-import { reactive, readonly, provide, inject, App } from "vue";
+import { reactive, readonly, inject, App } from "vue";
 import axios from "axios";
 import { Post, today, thisWeek, thisMonth } from "./mocks";
 
@@ -8,18 +8,26 @@ export interface User {
   password: string;
 }
 
-interface State {
-  posts: PostsState;
-}
+export type Author = Omit<User, "password">;
 
-interface PostsState {
+interface BaseState<T> {
   ids: string[];
-  all: Map<string, Post>;
+  all: Map<string, T>;
   loaded: boolean;
 }
 
+type PostsState = BaseState<Post>;
+interface AuthorsState extends BaseState<Author> {
+  currentUserId: string | undefined;
+}
+
+interface State {
+  posts: PostsState;
+  authors: AuthorsState;
+}
+
 export const storeKey = Symbol("store");
-class Store {
+export class Store {
   private state: State;
 
   constructor(initial: State) {
@@ -36,13 +44,16 @@ class Store {
 
   async createPost(post: Post) {
     const response = await axios.post<Post>("/posts", post);
-    this.state.posts.all.set(post.id, response.data);
-    this.state.posts.ids.push(post.id);
+    this.state.posts.all.set(response.data.id, response.data);
+    this.state.posts.ids.push(response.data.id);
   }
 
   async createUser(user: User) {
-    // ...
-    console.log(user);
+    const response = await axios.post<Author>("/users", user);
+    this.state.authors.all.set(response.data.id, response.data);
+    this.state.authors.ids.push(response.data.id);
+    this.state.authors.currentUserId = response.data.id;
+    console.log(this.state.authors);
   }
 
   async fetchPosts() {
@@ -67,6 +78,12 @@ all.set(thisWeek.id, thisWeek);
 all.set(thisMonth.id, thisMonth);
 
 export const store = new Store({
+  authors: {
+    all: new Map<string, Author>(),
+    ids: [today.id, thisWeek.id, thisMonth.id],
+    loaded: false,
+    currentUserId: undefined,
+  },
   posts: {
     all,
     ids: [today.id, thisWeek.id, thisMonth.id],
@@ -74,8 +91,23 @@ export const store = new Store({
   },
 });
 
-export const emptyStore = () => {
+export const emptyStore = (isUserAuthenticated: boolean = true) => {
   return new Store({
+    authors: isUserAuthenticated
+      ? {
+          ids: ["100"],
+          all: new Map<string, Author>([
+            ["100", { id: "100", username: "username" }],
+          ]),
+          loaded: false,
+          currentUserId: "100",
+        }
+      : {
+          ids: [],
+          all: new Map<string, Author>(),
+          loaded: false,
+          currentUserId: undefined,
+        },
     posts: {
       ids: [],
       all: new Map(),

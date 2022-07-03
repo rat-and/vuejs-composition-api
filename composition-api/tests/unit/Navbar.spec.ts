@@ -5,7 +5,7 @@ import { emptyStore } from "./../../src/store";
 
 describe("Navbar", () => {
   it("shows a signup modal via teleport", async () => {
-    const store = emptyStore();
+    const store = emptyStore(false);
 
     const element = document.createElement("div");
     element.id = "modal";
@@ -23,6 +23,7 @@ describe("Navbar", () => {
       },
     });
 
+    await wrapper.get('[data-test="sign-up"]').trigger("click");
     const form = wrapper.getComponent(Signup);
 
     await form.get("#Username").setValue("TooLongUserName");

@@ -1,6 +1,6 @@
 import { store } from "./../../src/store";
 import { nextTick } from "vue";
-import { flushPromises, mount } from "@vue/test-utils";
+import { flushPromises, mount, RouterLinkStub } from "@vue/test-utils";
 import Timeline from "../../src/components/Timeline.vue";
 import { today, thisWeek, thisMonth } from "../../src/mocks";
 
@@ -28,7 +28,10 @@ function mountTimeline() {
   };
   return mount(testComponent, {
     global: {
-      plugins: [store]
+      components: {
+        RouterLink: RouterLinkStub,
+      },
+      plugins: [store],
     },
   });
 }
