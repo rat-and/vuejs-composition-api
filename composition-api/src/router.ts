@@ -8,7 +8,9 @@ import { Store } from "./store";
 
 export function routerWithStore(store: Store) {
   const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(
+      process.env.NODE_ENV === "production" ? "/composition-api-demo" : "/"
+    ),
     routes: [
       {
         path: "/",

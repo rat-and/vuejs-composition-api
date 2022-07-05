@@ -1,4 +1,9 @@
 <template>
+  <div class="message is-primary is-marginless my-4">
+    <div class="message-header">
+      <div>Posts for {{ currentPeriod.toLocaleLowerCase() }} </div>
+    </div>
+  </div>
   <nav class="is-primary panel">
     <span class="panel-tabs">
       <a
@@ -7,9 +12,15 @@
         :class="{ 'is-active': period === currentPeriod }"
         :data-test="period"
         @click="setPeriod(period)"
-      >{{ period }}</a>
+        >{{ period }}</a
+      >
     </span>
-    <timeline-post v-for="post in posts" :key="post.id" :post="post" class="panel-block" />
+    <timeline-post
+      v-for="post in posts"
+      :key="post.id"
+      :post="post"
+      class="panel-block"
+    />
   </nav>
 </template>
 
@@ -17,7 +28,7 @@
 import { defineComponent, ref, computed } from "vue";
 import moment from "moment";
 import { Post } from "../mocks";
-import { useStore } from '../store';
+import { useStore } from "../store";
 import TimelinePost from "./TimelinePost.vue";
 
 type Period = "Today" | "This Week" | "This Month";
@@ -31,10 +42,10 @@ export default defineComponent({
     const allPosts: Post[] = store.getState().posts.ids.reduce<Post[]>((acc, id) => {
       const thePost = store.getState().posts.all.get(id);
       if (!thePost) {
-        throw Error('This post was not found')
+        throw Error("This post was not found");
       }
-      return acc.concat(thePost)
-    }, [])
+      return acc.concat(thePost);
+    }, []);
 
     const posts = computed(() => {
       return allPosts.filter((post) => {

@@ -1,11 +1,18 @@
-<template>Editor</template>
+<template>
+  <post-writer :post="post" @save="save" />
+</template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "../store";
+import { Post } from "../mocks";
+import PostWriter from "./PostWriter.vue";
 
 export default defineComponent({
+  components: {
+    PostWriter,
+  },
   name: "PostViewer",
   async setup() {
     const store = useStore();
@@ -26,8 +33,14 @@ export default defineComponent({
       router.push("/");
     }
 
+    const save = async (post: Post) => {
+      await store.updatePost(post);
+      router.push("/");
+    };
+
     return {
       post,
+      save,
     };
   },
 });

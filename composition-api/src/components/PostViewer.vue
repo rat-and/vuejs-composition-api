@@ -1,13 +1,22 @@
 <template>
-  <router-link
-    v-if="canEdit"
-    :to="`/posts/${post.id}/edit`"
-    class="button is-link is-rounded"
-    data-test="can-edit"
-  >
-    Edit
-  </router-link>
-  <h1>{{ post.title }}</h1>
+  <div class="columns">
+    <div class="column"></div>
+
+    <div class="column is-two-thirds">
+      <router-link
+        v-if="canEdit"
+        :to="`/posts/${post.id}/edit`"
+        class="button is-link is-rounded"
+        data-test="can-edit"
+      >
+        Edit
+      </router-link>
+      <h1>{{ post.title }}</h1>
+      <div v-html="post.html" />
+    </div>
+
+    <div class="column"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -25,6 +34,7 @@ export default defineComponent({
       await store.fetchPosts();
     }
 
+    console.log(store.getState())
     const post = store.getState().posts.all.get(id);
 
     if (!post) {

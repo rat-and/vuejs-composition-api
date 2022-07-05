@@ -21,7 +21,7 @@ interface AuthorsState extends BaseState<Author> {
   currentUserId: string | undefined;
 }
 
-interface State {
+export interface State {
   posts: PostsState;
   authors: AuthorsState;
 }
@@ -46,6 +46,11 @@ export class Store {
     const response = await axios.post<Post>("/posts", post);
     this.state.posts.all.set(response.data.id, response.data);
     this.state.posts.ids.push(response.data.id);
+  }
+
+  async updatePost(post: Post) {
+    const response = await axios.put<Post>("/posts", post);
+    this.state.posts.all.set(response.data.id, response.data);
   }
 
   async createUser(user: User) {
@@ -91,7 +96,7 @@ export const store = new Store({
   },
 });
 
-export const emptyStore = (isUserAuthenticated: boolean = true) => {
+export const emptyStore = (isUserAuthenticated = true) => {
   return new Store({
     authors: isUserAuthenticated
       ? {
